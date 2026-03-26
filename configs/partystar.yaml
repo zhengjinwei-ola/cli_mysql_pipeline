@@ -1,0 +1,145 @@
+env: prod
+discovery: "consul.internal:8500"
+
+mysql_debug: false
+mysql_addr: "readonly:imee2016@tcp(oversea-slave-1.mysql.singapore.rds.aliyuncs.com:3306)/xianshi?charset=utf8mb4&parseTime=true"
+mysql_master_addr: "readonly:imee2016@tcp(oversea-master.mysql.singapore.rds.aliyuncs.com:3306)/xianshi?charset=utf8mb4&parseTime=true"
+
+# DTS/Kafka Source
+mq_addr: "dts-ap-southeast-1-vpc.aliyuncs.com:18003"
+mq_topic: "ap_southeast_1_rm_t4nwx4k1zh8rcpccv_rdsdt_dtsacct"
+mq_group: "dtsdeze94hh22fwbb0"
+mq_user_name: "EsUser2020-dtsdeze94hh22fwbb0"
+mq_password: "EsUser2020"
+
+# NSQ Consumer（→ES 自定义消息）
+nsq_addr: "172.16.0.69:4150,172.16.0.69:4152,172.16.0.69:4154,172.16.0.69:4156"
+nsq_topic: "xs.mysql_to_es"
+nsq_channel: "for_mysql_to_es_partystar"
+
+# ES Sink
+es_host: "http://es-cn-zz11tlsnn00134spx.elasticsearch.aliyuncs.com:9200"
+es_name: "elastic"
+es_pass: "HustEs@banban20201117"
+
+# NSQ Sink（原 cli_mysql_to_nsq 配置迁移至此）
+nsq_publisher:
+  debug: false
+  pools:
+    default:
+      - "172.16.0.69:4150"
+      - "172.16.0.69:4152"
+    circle:
+      - "172.16.0.69:4154"
+      - "172.16.0.69:4156"
+  topics:
+    xs.report: circle
+    xs.redis.cache: circle
+    xs.es: circle
+    xs.text.scan: circle
+    xs.recommend: circle
+    xs.xs_user_profile: circle
+    xs.xs_pay_change: circle
+    xs.room.es: circle
+    xs.xs_chatroom_config: circle
+    xs.agora.record: circle
+    xs.token: circle
+    xs.iap.focus: circle
+    xs.ps.redis.cache: circle
+    xs.xs_order: circle
+    xs.focus: circle
+    xs.treat_gs: circle
+    bbu.duty: circle
+    rs.es: circle
+    xs.risk: circle
+    xs.xs_chatroom_package: circle
+  new_tables:
+    - xianshi.xs_commodity
+  tables:
+    xianshi.xs_pay_change_new:
+      - xs.xs_pay_change
+      - xs.report
+      - xs.risk
+      - xs.treat_gs
+      - bbu.duty
+    xianshi.xs_order:
+      - xs.xs_order
+    xianshi.xs_user_profile:
+      - xs.xs_user_profile
+      - xs.text.scan
+      - xs.es
+      - rs.es
+    xianshi.xs_user_idcard:
+      - xs.xs_user_profile
+    xianshi.xs_chatroom_config:
+      - xs.xs_chatroom_config
+      - xs.redis.cache
+      - xs.es
+      - xs.room.es
+    xianshi.xs_chatroom_package:
+      - xs.xs_chatroom_package
+      - xs.recommend
+    xianshi.xs_chatroom:
+      - xs.text.scan
+      - xs.redis.cache
+      - xs.room.es
+    xianshi.xs_group:
+      - xs.text.scan
+    xianshi.xs_fleet:
+      - xs.text.scan
+    xianshi.xs_order_vote:
+      - xs.text.scan
+    xianshi.xs_user_photos:
+      - xs.text.scan
+    xianshi.xs_user_god:
+      - xs.redis.cache
+      - xs.es
+    xianshi.xs_user_exposure:
+      - xs.es
+    xianshi.xs_user_interest_tags:
+      - xs.redis.cache
+      - xs.es
+    xianshi.xs_user_friend:
+      - xs.redis.cache
+      - xs.treat_gs
+    xianshi.xs_pay:
+      - xs.report
+      - xs.focus
+    xianshi.xs_coin_log:
+      - xs.report
+      - bbu.duty
+      - xs.treat_gs
+    xianshi.xs_chatroom_forbidden:
+      - xs.redis.cache
+    xianshi.xs_invite_gift_record:
+      - xs.report
+    xianshi.xs_chatroom_view:
+      - xs.room.es
+    xianshi.xs_user_match:
+      - xs.recommend
+    xianshi.xs_chatroom_extend_wolf:
+      - xs.recommend
+    xianshi.xs_chatroom_extend_guess:
+      - xs.recommend
+    xianshi.xs_chatroom_extend_under:
+      - xs.recommend
+    xianshi.xs_chatroom_package_bean:
+      - xs.recommend
+    xianshi.xs_circle_topic_stats:
+      - rs.es
+    xianshi.xs_rush_topic_relation:
+      - rs.es
+    xianshi.xs_user_settings:
+      - xs.es
+    xianshi.xs_user_country:
+      - xs.es
+    xianshi.xs_chatroom_sender:
+      - xs.treat_gs
+    xianshi.xs_live_fans_list:
+      - xs.treat_gs
+    xianshi.xs_circle_tag:
+      - rs.es
+    xianshi.xs_user_bigarea:
+      - xs.redis.cache
+    xianshi.xs_commodity:
+      - xs.ps.redis.cache

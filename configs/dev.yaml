@@ -1,0 +1,98 @@
+env: dev
+discovery: "consul.internal:8500"
+
+mysql_debug: false
+mysql_addr: "Imee2016@tcp(ps-serverless-dev.rwlb.singapore.rds.aliyuncs.com:3306)/xianshi?charset=utf8mb4&parseTime=true"
+mysql_master_addr: "normal:Imee2016@tcp(ps-serverless-dev.rwlb.singapore.rds.aliyuncs.com:3306)/xianshi?charset=utf8mb4&parseTime=true"
+
+# DTS/Kafka Source
+mq_addr: "127.0.0.1:9092"
+mq_topic: "es"
+mq_group: "es-consume-group"
+mq_user_name: ""
+mq_password: ""
+
+# NSQ Consumer（→ES 自定义消息）
+nsq_addr: "127.0.0.1:4150"
+nsq_topic: "xs.mysql_to_es"
+nsq_channel: "for_mysql_to_es_banban"
+
+# ES Sink（本地 ES）
+es_host: "http://127.0.0.1:9200"
+es_name: ""
+es_pass: ""
+
+# NSQ Sink（本地 NSQ，对应 cli_mysql_to_nsq dev.json）
+nsq_publisher:
+  debug: true
+  pools:
+    default:
+      - "localhost:4150"
+    circle:
+      - "localhost:4150"
+  topics:
+    xs.report: circle
+    xs.redis.cache: circle
+    xs.es: circle
+    xs.text.scan: circle
+    xs.xs_user_profile: circle
+    xs.xs_pay_change: circle
+    xs.room.es: circle
+    xs.xs_chatroom_config: circle
+    xs.agora.record: circle
+    xs.token: circle
+    xs.iap.focus: circle
+    xs.ps.redis.cache: circle
+    xs.xs_order: circle
+    xs.risk: circle
+    xs.treat_gs: circle
+    xs.focus: circle
+  new_tables:
+    - xianshi.xs_commodity
+    - xianshi.xs_user_money
+    - xianshi.xs_user_friend
+    - xianshi.xs_user_bigarea
+  tables:
+    xianshi.xs_pay_change_new:
+      - xs.report
+      - xs.risk
+      - xs.treat_gs
+    xianshi.xs_order:
+      - xs.xs_order
+    xianshi.xs_user_profile:
+      - xs.es
+    xianshi.xs_user_idcard:
+      - xs.xs_user_profile
+    xianshi.xs_chatroom_config:
+      - xs.xs_chatroom_config
+      - xs.es
+      - xs.ps.redis.cache
+    xianshi.xs_user_exposure:
+      - xs.es
+    xianshi.xs_user_friend:
+      - xs.ps.redis.cache
+      - xs.treat_gs
+    xianshi.xs_pay:
+      - xs.report
+      - xs.focus
+    xianshi.xs_coin_log:
+      - xs.report
+      - xs.treat_gs
+    xianshi.xs_invite_gift_record:
+      - xs.report
+    xianshi.xs_user_settings:
+      - xs.es
+    xianshi.xs_user_country:
+      - xs.es
+    xianshi.xs_chatroom_sender:
+      - xs.treat_gs
+    xianshi.xs_user_safe_mobile:
+      - xs.treat_gs
+    xianshi.xs_live_fans_list:
+      - xs.treat_gs
+    xianshi.xs_gs_user_box_detail:
+      - xs.treat_gs
+    xianshi.xs_user_bigarea:
+      - xs.ps.redis.cache
+    xianshi.xs_user_money:
+      - xs.ps.redis.cache

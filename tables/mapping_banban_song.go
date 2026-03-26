@@ -1,0 +1,22 @@
+package tables
+
+var MappingBanBanSong map[string]interface{} = map[string]interface{}{
+	"id":             map[string]interface{}{"type": "integer"},
+	"name":           map[string]interface{}{"type": "text", "index": true},
+	"photo":          map[string]interface{}{"type": "text", "index": false},
+	"singer_id":      map[string]interface{}{"type": "integer"},
+	"singer_name":    map[string]interface{}{"type": "text", "index": true},
+	"original_mp3":   map[string]interface{}{"type": "text", "index": false},
+	"size":           map[string]interface{}{"type": "integer"},
+	"playtime":       map[string]interface{}{"type": "integer"},
+	"hq_music":       map[string]interface{}{"type": "text", "index": false},
+	"hq_size":        map[string]interface{}{"type": "integer"},
+	"hq_playtime":    map[string]interface{}{"type": "integer"},
+	"brc":            map[string]interface{}{"type": "text", "index": false},
+	"uploader_uid":   map[string]interface{}{"type": "integer"},
+	"uploader_name":  map[string]interface{}{"type": "text", "index": false},
+	"uploader_photo": map[string]interface{}{"type": "text", "index": false},
+	"tag":            map[string]interface{}{"type": "keyword"},
+	"type":           map[string]interface{}{"type": "integer"},
+	"status":         map[string]interface{}{"type": "integer"},
+}
